@@ -11,10 +11,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler 
 
-##data_set_path="emozione_cane"
-# data_set_path="images"
-# resize_dataset_dog(data_set_path,size=(32,32))
+
 data_set_path="images_resized"
+resize_dataset_dog(data_set_path,size=(32,32))
+
+
 
 data_set, labels=create_dataset_dog(data_set_path)
 # print(data_set[])
@@ -22,13 +23,20 @@ data_set, labels=create_dataset_dog(data_set_path)
 pca = PCA(n_components=100) 
 data_set = pca.fit_transform(data_set_path)
 
+
+
 dataset_norm = [(image - image.min()) / (image.max() - image.min()) for image in data_set]
-# # print(dataset_norm[0])
+print(dataset_norm[0])
+
+# Codifica delle etichette
+label_encoder = LabelEncoder()
+labels = label_encoder.fit_transform(labels)
+
 
 
 #codificazione delle etichette
-label_encoder = LabelEncoder()
-label_encoder.fit(labels)
+# label_encoder = LabelEncoder()
+# label_encoder.fit(labels)
 labels = label_encoder.transform(labels)
 #print(labels)
 
@@ -36,10 +44,10 @@ X_train, X_test, y_train, y_test = train_test_split(data_set, labels, random_sta
 
 
 # prova con svc
-svm = SVC(kernel='rbf')
-svm.fit(X_train, y_train)
+# svm = SVC(kernel='rbf')
+# svm.fit(X_train, y_train)
 
-y_pred = svm.predict(X_test)
+# y_pred = svm.predict(X_test)
 
 
 # prova con clf
@@ -49,10 +57,10 @@ y_pred = svm.predict(X_test)
 
 
 # prova con KNeighbor
-# neigh = KNeighborsClassifier(n_neighbors=7)
-# neigh.fit(X_train, y_train)
+neigh = KNeighborsClassifier(n_neighbors=7)
+neigh.fit(X_train, y_train)
 
-# y_pred=neigh.predict(X_test)
+y_pred=neigh.predict(X_test)
 
 
 accuracy = accuracy_score(y_test, y_pred)
